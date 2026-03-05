@@ -1,40 +1,25 @@
-  import express from "express";
-  import Product from "../models/Product.js";
-  import upload from "../middleware/upload.js";
-  import auth from "../middleware/auth.js";
+import express from "express";
+import Product from "../models/Product.js";
 
-  const router = express.Router();
+const router = express.Router();
 
-  router.post("/", auth, upload.single("image"), async (req, res) => {
-    const { name, price, category, description, shopId } = req.body;
+router.post("/bulk-create", async (req, res) => {
+  try {
+    const { businessId, products } = req.body;
 
-    const product = await Product.create({
-      shopId,
-      name,
-      price,
-      category,
-      description,
-      imageUrl: req.file ? `/uploads/${req.file.filename}` : null,
-    });
+    const formatted = products.map((p) => ({
+      businessId,
+      name: p.name,
+      price: p.price,
+      image: p.image,
+    }));
 
-    res.json(product);
-  });
+    await Product.insertMany(formatted);
 
-  router.get("/by-shop/:shopId", async (req, res) => {
-    const { shopId } = req.params;
-  
-    if (!shopId || shopId === "undefined") {
-      return res.status(400).json({ error: "Invalid shopId" });
-    }
-  
-    const products = await Product.find({ shopId });
-    res.json(products);
-  });
-  
-
-  router.delete("/:id", auth, async (req, res) => {
-    await Product.findByIdAndDelete(req.params.id);
     res.json({ success: true });
-  });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-  export default router;
+export default router;

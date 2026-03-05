@@ -6,7 +6,7 @@ export type Business = {
   };
   
   export type Product = {
-    id: string;
+    _id: string;
     name: string;
     price: number;
     image: string;

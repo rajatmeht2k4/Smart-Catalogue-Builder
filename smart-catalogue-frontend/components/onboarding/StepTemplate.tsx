@@ -17,7 +17,7 @@ export default function StepTemplate({ formData, setFormData }: any) {
       <div className="grid md:grid-cols-2 gap-4">
         {catalogueTemplates.map((tpl) => {
           const SelectedPreview = tpl.Preview;
-          const isSelected = formData.templateId === tpl.id;
+          const isSelected = formData.template === tpl.id;
 
           return (
             <div
@@ -25,7 +25,7 @@ export default function StepTemplate({ formData, setFormData }: any) {
               onClick={() =>
                 setFormData((prev: any) => ({
                   ...prev,
-                  templateId: tpl.id,
+                  template: tpl.id,
                 }))
               }
               className={`relative rounded-xl p-4 cursor-pointer border transition ${isSelected

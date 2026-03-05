@@ -6,10 +6,13 @@ import { Copy, MessageCircle } from 'lucide-react';
 
 export default function StepSuccess({ formData }: any) {
   const copy = () => navigator.clipboard.writeText(formData.catalogueLink);
+  
   const finishOnboarding = () => {
     localStorage.setItem("onboarding_done", "true");
     window.location.href = "/admin";
   };
+
+  
 
   return (
     <div className="space-y-6 text-center">
@@ -22,7 +25,7 @@ export default function StepSuccess({ formData }: any) {
         </Button>
       </div>
 
-      <Button className="w-full bg-green-500 hover:bg-green-600">
+      <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
         <MessageCircle className="w-4 h-4 mr-2" /> Share on WhatsApp
       </Button>
 

@@ -23,7 +23,7 @@ export default function FreshmartFull({
   };
 
   const selectedNames = Array.from(selected)
-    .map((id) => products.find((p) => p.id === id)?.name)
+    .map((id) => products.find((p) => p._id === id)?.name)
     .filter(Boolean) as string[];
 
   const waOrderText =
@@ -110,13 +110,13 @@ export default function FreshmartFull({
                             FLASH DEALS
                         </motion.div> */}
 
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 sm:mb-6 leading-tight">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 sm:mb-6 leading-tight text-left">
               Premium Quality,
               <br />
               <span className="text-[#FFEB3B]">Unbeatable Prices</span>
             </h2>
 
-            <p className="text-lg sm:text-xl font-semibold text-white/90 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl font-semibold text-white/90 max-w-2xl text-left">
               Discover handpicked products and great deals from local businesses
             </p>
           </motion.div>
@@ -140,10 +140,10 @@ export default function FreshmartFull({
           {/* Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {products.map((p, index) => {
-              const active = selected.has(p.id);
+              const active = selected.has(p._id);
               return (
                 <motion.div
-                  key={p.id}
+                  key={p._id}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{
@@ -154,7 +154,7 @@ export default function FreshmartFull({
                   whileHover={{ y: -8, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="group cursor-pointer"
-                  onClick={() => toggle(p.id)}
+                  onClick={() => toggle(p._id)}
                 >
                   <div
                     className={`bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 h-full relative ${active ? "ring-2 ring-offset-2" : ""
