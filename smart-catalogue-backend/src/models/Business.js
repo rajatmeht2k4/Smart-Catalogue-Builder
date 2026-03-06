@@ -15,6 +15,8 @@ const businessSchema = new mongoose.Schema(
       default: "freshmart",
     },
     whatsapp: String,
+    totalViews: { type: Number, default: 0 },
+    totalClicks: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

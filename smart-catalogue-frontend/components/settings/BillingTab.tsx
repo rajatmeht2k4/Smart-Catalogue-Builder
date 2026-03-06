@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Crown } from "lucide-react";
-import { mockBilling } from "@/lib/mockSettings";
 
 export default function BillingTab() {
   return (
@@ -22,18 +21,18 @@ export default function BillingTab() {
           </Badge>
         </div>
 
-        <div className="rounded-lg bg-gray-100 p-4 text-sm space-y-2">
+        <div className="rounded-lg bg-gray-100 p-4 text-sm space-y-2 mt-4">
           <div className="flex justify-between">
             <span>Current Plan</span>
-            <span>{mockBilling.plan}</span>
+            <span className="font-medium">Free Starter</span>
           </div>
           <div className="flex justify-between">
             <span>Products Limit</span>
-            <span>{mockBilling.productLimit}</span>
+            <span className="font-medium">50</span>
           </div>
           <div className="flex justify-between">
             <span>Analytics</span>
-            <span>{mockBilling.analytics}</span>
+            <span className="font-medium">Basic</span>
           </div>
         </div>
 

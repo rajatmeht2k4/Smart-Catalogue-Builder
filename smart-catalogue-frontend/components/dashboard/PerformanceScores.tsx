@@ -1,15 +1,20 @@
-import { mockPerformanceMetrics } from "@/lib/mockAnalytics";
-
 const statusColorMap: Record<string, string> = {
   excellent: "bg-green-100 text-green-700",
   good: "bg-blue-100 text-blue-700",
   bad: "bg-red-100 text-red-700",
 };
 
-export default function PerformanceScores() {
+export default function PerformanceScores({ data }: { data?: any[] }) {
+  const scores = data && data.length > 0 ? data : [
+    { title: "Mobile Score", value: "-", status: "good" },
+    { title: "Desktop Score", value: "-", status: "good" },
+    { title: "SEO Score", value: "-", status: "good" },
+    { title: "Load Time", value: "-", status: "good" },
+  ];
+
   return (
     <>
-      {mockPerformanceMetrics.map((item) => (
+      {scores.map((item) => (
         <div
           key={item.title}
           className="bg-white p-6 rounded-2xl shadow flex flex-col justify-between"

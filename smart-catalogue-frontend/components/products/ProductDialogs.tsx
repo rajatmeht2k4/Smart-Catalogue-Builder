@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Product } from "@/lib/mockProducts";
+import { Product } from "@/lib/types";
 
 type Props = {
   mode: "add" | "edit" | "delete" | null;
@@ -67,7 +67,9 @@ export default function ProductDialogs({
                 variant="destructive"
                 className="text-white bg-red-700 hover:shadow-md"
                 onClick={() => {
-                  if (product) onDelete(product.id);
+                  if (product && (product.id || product._id)) {
+                    onDelete((product.id || product._id) as string);
+                  }
                   onClose();
                 }}
               >

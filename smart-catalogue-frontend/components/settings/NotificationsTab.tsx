@@ -6,10 +6,16 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Save } from "lucide-react";
 import { toast } from "sonner";
-import { mockNotifications } from "@/lib/mockSettings";
 
 export default function NotificationsTab() {
-  const [state, setState] = useState(mockNotifications);
+  const [state, setState] = useState({
+    email: true,
+    push: false,
+    sms: true,
+    orderUpdates: true,
+    marketing: false,
+    weeklyReports: true,
+  });
 
   const Item = ({
     title,
@@ -22,7 +28,7 @@ export default function NotificationsTab() {
         <p className="text-sm text-muted-foreground">{desc}</p>
       </div>
       <Switch
-      className="bg-gray-300"
+        className="bg-gray-300"
         checked={state[keyName]}
         onCheckedChange={(v) => setState({ ...state, [keyName]: v })}
       />

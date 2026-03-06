@@ -16,12 +16,26 @@ import {
     Crown,
     Check,
     Globe,
+    Eye,
+    MousePointerClick,
 } from "lucide-react";
 import { QRCodeCanvas } from "qrcode.react";
+import { useBusiness, useDashboardAnalytics } from "@/lib/hooks";
 
 export default function SharingPage() {
     const [copied, setCopied] = useState(false);
-    const catalogueUrl = "https://smartcatalogue.app/npmartindia";
+    const { business } = useBusiness();
+    const { analytics } = useDashboardAnalytics();
+
+    const catalogueUrl = `http://localhost:3000/catalogue/${business?.slug || ""}`;
+
+    const totalViews = analytics?.summary?.totalViews || 0;
+
+    // Traffic source breakdown from backend
+    const trafficSources: any[] = analytics?.trafficSources || [];
+    const socialCount = trafficSources.find((s: any) => s._id === "social")?.count || 0;
+    const directCount = trafficSources.find((s: any) => s._id === "direct")?.count || 0;
+    const referralCount = trafficSources.find((s: any) => s._id === "referral")?.count || 0;
 
     const copyToClipboard = async () => {
         await navigator.clipboard.writeText(catalogueUrl);
@@ -30,9 +44,11 @@ export default function SharingPage() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const shareOnPlatform = (platform: string) => {
-        toast.success(`Opening ${platform}...`);
-    };
+    // Append ?ref= so the AnalyticsTracker knows where the visitor came from
+    const waShareUrl = `${catalogueUrl}?ref=whatsapp`;
+    const fbShareUrl = `${catalogueUrl}?ref=facebook`;
+    const twShareUrl = `${catalogueUrl}?ref=twitter`;
+    const shareText = `Check out ${business?.name || "our"} catalogue: `;
 
     return (
         <div className="space-y-6">
@@ -45,21 +61,21 @@ export default function SharingPage() {
             </div>
 
             <div className="max-w-4xl space-y-6">
-                {/* Sharing Stats */}
+                {/* Live Stats */}
                 <Card className="p-6">
                     <h3 className="text-lg font-medium ">Sharing Stats</h3>
                     <div className="grid grid-cols-3 gap-4 text-center">
                         <div>
-                            <div className="text-2xl font-semibold">234</div>
-                            <div className="text-sm text-gray-500">Total Shares</div>
+                            <div className="text-2xl font-semibold">{totalViews}</div>
+                            <div className="text-sm text-gray-500">Total Views</div>
                         </div>
                         <div>
-                            <div className="text-2xl font-semibold">156</div>
-                            <div className="text-sm text-gray-500">Via WhatsApp</div>
-                        </div>
-                        <div>
-                            <div className="text-2xl font-semibold">78</div>
+                            <div className="text-2xl font-semibold">{socialCount}</div>
                             <div className="text-sm text-gray-500">Via Social</div>
+                        </div>
+                        <div>
+                            <div className="text-2xl font-semibold">{directCount}</div>
+                            <div className="text-sm text-gray-500">Via Direct</div>
                         </div>
                     </div>
                 </Card>
@@ -90,41 +106,38 @@ export default function SharingPage() {
                     <Card className="p-6">
                         <h3 className="text-lg font-medium">Share on Social Media</h3>
                         <div className="grid  gap-3">
-                            <Button
-                                variant="outline"
-                                className="justify-start  "
-                                onClick={() => shareOnPlatform("WhatsApp")}
+                            <a
+                                href={`https://wa.me/?text=${encodeURIComponent(shareText + waShareUrl)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
                             >
-                                <MessageCircle className="w-5 h-5 mr-3 text-green-400 " />
-                                WhatsApp
-                            </Button>
+                                <Button variant="outline" className="justify-start w-full">
+                                    <MessageCircle className="w-5 h-5 mr-3 text-green-400 " />
+                                    WhatsApp
+                                </Button>
+                            </a>
 
-                            <Button
-                                variant="outline"
-                                className="justify-start"
-                                onClick={() => shareOnPlatform("Facebook")}
+                            <a
+                                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fbShareUrl)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
                             >
-                                <Facebook className="w-5 h-5 mr-3 text-blue-600" />
-                                Facebook
-                            </Button>
+                                <Button variant="outline" className="justify-start w-full">
+                                    <Facebook className="w-5 h-5 mr-3 text-blue-600" />
+                                    Facebook
+                                </Button>
+                            </a>
 
-                            <Button
-                                variant="outline"
-                                className="justify-start"
-                                onClick={() => shareOnPlatform("Instagram")}
+                            <a
+                                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText + twShareUrl)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
                             >
-                                <Instagram className="w-5 h-5 mr-3 text-pink-600" />
-                                Instagram
-                            </Button>
-
-                            <Button
-                                variant="outline"
-                                className="justify-start"
-                                onClick={() => shareOnPlatform("Twitter")}
-                            >
-                                <Twitter className="w-5 h-5 mr-3 text-blue-400" />
-                                Twitter
-                            </Button>
+                                <Button variant="outline" className="justify-start w-full">
+                                    <Twitter className="w-5 h-5 mr-3 text-blue-400" />
+                                    Twitter
+                                </Button>
+                            </a>
                         </div>
                     </Card>
 
@@ -142,9 +155,18 @@ export default function SharingPage() {
                             variant="outline"
                             size="sm"
                             className="mt-3"
-                            onClick={() => toast.success("QR code ready to scan")}
+                            onClick={() => {
+                                const canvas = document.querySelector("canvas");
+                                if (canvas) {
+                                    const link = document.createElement("a");
+                                    link.download = `${business?.slug || "catalogue"}-qr.png`;
+                                    link.href = canvas.toDataURL();
+                                    link.click();
+                                    toast.success("QR code downloaded!");
+                                }
+                            }}
                         >
-                            Download QR (coming soon)
+                            Download QR
                         </Button>
                     </div>
                 </div>

@@ -41,7 +41,7 @@ body {
 
 
 /* Premium scrollbar */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 8px;
 }
 
@@ -56,10 +56,24 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #9333ea, #db2777);
-}
+} */
 
 /* Firefox */
-* {
+/* * {
   scrollbar-width: auto;
   scrollbar-color: #a855f7 transparent;
+} */
+
+/* Catalogue Builder Preview — view-only mode */
+/* Hide floating WhatsApp CTAs at bottom */
+.catalogue-preview-panel .fixed {
+  display: none !important;
+}
+/* Disable product card clicks and selection checkboxes */
+.catalogue-preview-panel .cursor-pointer {
+  pointer-events: none;
+}
+/* Hide the share button in header */
+.catalogue-preview-panel header button {
+  display: none !important;
 }

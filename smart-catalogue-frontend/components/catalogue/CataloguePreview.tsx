@@ -1,6 +1,5 @@
 "use client";
 
-import { CatalogueProduct } from "@/lib/mockCatalogueProducts";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Wand2 } from "lucide-react";
@@ -12,7 +11,7 @@ export default function CataloguePreview({
 }: {
   title: string;
   description: string;
-  products: CatalogueProduct[];
+  products: any[];
 }) {
   return (
     <Card className="overflow-hidden shadow-xl">
@@ -25,8 +24,8 @@ export default function CataloguePreview({
       </div>
 
       <div className="p-4 space-y-4">
-        {products.map((p) => (
-          <Card key={p.id} className="overflow-hidden">
+        {products.map((p: any, index: number) => (
+          <Card key={p._id || p.id || index} className="overflow-hidden">
             <img src={p.image} className="w-full h-40 object-cover" />
             <div className="p-4">
               <h3 className="font-medium">{p.name}</h3>

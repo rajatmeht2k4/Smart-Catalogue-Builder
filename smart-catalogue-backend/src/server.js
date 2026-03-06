@@ -6,6 +6,7 @@ import productRoutes from "./routes/products.js";
 
 
 import shopRoutes from "./routes/business.js";
+import analyticsRoutes from "./routes/analytics.js";
 
 dotenv.config();
 
@@ -24,8 +25,7 @@ connectDB();
 app.use("/api/business", shopRoutes);
 
 app.use("/api/products", productRoutes);
-
-
+app.use("/api/analytics", analyticsRoutes);
 app.listen(5000, () => {
   console.log("Server running on port 5000");
 });

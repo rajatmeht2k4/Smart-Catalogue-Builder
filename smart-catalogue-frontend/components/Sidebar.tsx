@@ -6,12 +6,21 @@ import { SignOutButton, useUser } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 
 
+import { useBusiness } from "@/lib/hooks";
+
+
 export default function Sidebar() {
 
   const pathname = usePathname();
 
   const { isSignedIn, user } = useUser();
+  const { business } = useBusiness();
   const router = useRouter();
+
+  const businessName = business?.name || "My Business";
+  const userEmail = user?.primaryEmailAddress?.emailAddress || "";
+  const userImage = user?.imageUrl;
+  const initials = businessName.split(" ").map((w: string) => w[0]).join("").slice(0, 2).toUpperCase();
 
   const linkClass = (path: string) =>
     `flex items-center gap-3 px-3 py-2 rounded-lg transition ${pathname === path
@@ -24,12 +33,16 @@ export default function Sidebar() {
     <aside className="fixed left-0 top-0 h-screen w-64 bg-white shadow-md px-5 py-6 flex flex-col">
       {/* Logo */}
       <div className="flex items-center gap-3 mb-10">
-        <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-white font-bold">
-          NP
-        </div>
+        {userImage ? (
+          <img src={userImage} alt={businessName} className="h-10 w-10 rounded-xl object-cover" />
+        ) : (
+          <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-white font-bold text-sm">
+            {initials}
+          </div>
+        )}
         <div>
-          <p className="font-semibold">NP MART INDIA</p>
-          <p className="text-xs text-gray-400">@q.gg</p>
+          <p className="font-semibold text-sm">{businessName}</p>
+          <p className="text-xs text-gray-400">{userEmail}</p>
         </div>
       </div>
 

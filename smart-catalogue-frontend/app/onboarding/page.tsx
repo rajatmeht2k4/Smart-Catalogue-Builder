@@ -10,7 +10,7 @@ import StepProduct from '@/components/onboarding/StepProduct';
 import StepAIMagic from '@/components/onboarding/StepAIMagic';
 import StepTemplate from '@/components/onboarding/StepTemplate';
 import StepSuccess from '@/components/onboarding/StepSuccess';
-import { Product } from '@/lib/mockProducts';
+import { Product } from '@/lib/types';
 import { useAuth } from '@clerk/nextjs';
 
 
@@ -50,7 +50,7 @@ export default function OnboardingWizard() {
   const createBusiness = async () => {
     try {
       const token = await getToken();
-  
+
       // 🔥 If business already exists → UPDATE template
       if (businessId) {
         await fetch("http://localhost:5000/api/business/update-template", {
@@ -64,10 +64,10 @@ export default function OnboardingWizard() {
             templateId: formData.template,
           }),
         });
-  
+
         return formData.catalogueLink.split("/").pop();
       }
-  
+
       // 🔥 Otherwise create new
       const res = await fetch("http://localhost:5000/api/business/create", {
         method: "POST",
@@ -83,13 +83,13 @@ export default function OnboardingWizard() {
           whatsapp: formData.whatsapp,
         }),
       });
-  
+
       if (!res.ok) throw new Error("Business creation failed");
-  
+
       const savedBusiness = await res.json();
-  
+
       setBusinessId(savedBusiness._id);
-  
+
       // Save products
       await fetch("http://localhost:5000/api/products/bulk-create", {
         method: "POST",
@@ -99,9 +99,9 @@ export default function OnboardingWizard() {
           products,
         }),
       });
-  
+
       return savedBusiness.slug;
-  
+
     } catch (err) {
       console.error("Create business error:", err);
       return null;
@@ -114,16 +114,16 @@ export default function OnboardingWizard() {
     if (step === 4) {
       const slug = await createBusiness();
       if (!slug) return;
-    
+
       setFormData(prev => ({
         ...prev,
         catalogueLink: `http://localhost:3000/catalogue/${slug}`,
       }));
-    
+
       setStep(5);
       return;
     }
-  
+
     if (step < totalSteps) {
       setStep(s => s + 1);
     } else {

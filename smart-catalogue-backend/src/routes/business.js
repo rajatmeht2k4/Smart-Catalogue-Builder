@@ -81,5 +81,27 @@ router.put("/update-template", requireAuth, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+/* ------------------ UPDATE BUSINESS PROFILE ------------------ */
+router.put("/update", requireAuth, async (req, res) => {
+  try {
+    const { name, tagline, whatsapp, brandColor } = req.body;
+
+    const business = await Business.findOne({ userId: req.auth.userId });
+    if (!business) return res.status(404).json({ error: "Business not found" });
+
+    if (name) {
+      business.name = name;
+      business.slug = name.toLowerCase().replace(/\s+/g, "-");
+    }
+    if (tagline !== undefined) business.tagline = tagline;
+    if (whatsapp !== undefined) business.whatsapp = whatsapp;
+    if (brandColor !== undefined) business.brandColor = brandColor;
+
+    await business.save();
+    res.json(business);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 export default router;

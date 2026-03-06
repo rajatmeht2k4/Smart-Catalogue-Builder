@@ -2,13 +2,15 @@
 
 import { Globe } from "lucide-react";
 
-type TrafficSource = {
-  source: string;
-  visits: number;
-  percentage: number;
-};
+export default function TrafficSourcesCard({ data }: { data: any[] }) {
+  const total = data.reduce((acc, curr) => acc + curr.count, 0);
 
-export default function TrafficSourcesCard({ data }: { data: TrafficSource[] }) {
+  const formattedData = data.map(d => ({
+    source: d._id.charAt(0).toUpperCase() + d._id.slice(1),
+    visits: d.count,
+    percentage: total > 0 ? Math.round((d.count / total) * 100) : 0
+  })).sort((a, b) => b.visits - a.visits);
+
   return (
     <div className="bg-white p-6 rounded-2xl shadow">
       <h3 className="font-semibold mb-3">
@@ -16,7 +18,7 @@ export default function TrafficSourcesCard({ data }: { data: TrafficSource[] }) 
       </h3>
 
       <div className="space-y-4">
-        {data.map((source, index) => (
+        {formattedData.map((source, index) => (
           <div key={index}>
             <div className="flex justify-between items-center mb-2">
               <div className="flex items-center gap-2">
@@ -44,6 +46,10 @@ export default function TrafficSourcesCard({ data }: { data: TrafficSource[] }) 
             </div>
           </div>
         ))}
+
+        {formattedData.length === 0 && (
+          <p className="text-sm text-gray-500 text-center py-4">No traffic data yet.</p>
+        )}
       </div>
     </div>
   );

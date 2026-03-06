@@ -47,6 +47,23 @@ export default function FreshmartFull({
         waQueryText
     )}`;
 
+    const trackEvent = async (type: "whatsapp_click" | "product_click", itemId?: string) => {
+        try {
+            await fetch("http://localhost:5000/api/analytics/track", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    businessId: (business as any)._id,
+                    type,
+                    source: "direct",
+                    ...(itemId ? { productId: itemId } : {})
+                }),
+            });
+        } catch (error) {
+            console.error("Failed to track event:", error);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-[#FAFAFA]">
             {/* Header */}
@@ -157,7 +174,10 @@ export default function FreshmartFull({
                                     whileHover={{ y: -8, scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
                                     className="group cursor-pointer"
-                                    onClick={() => toggle(p._id)}
+                                    onClick={() => {
+                                        if (!active) trackEvent("product_click", p._id);
+                                        toggle(p._id);
+                                    }}
                                 >
                                     <div
                                         className={`bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 h-full relative ${active ? "ring-2 ring-offset-2" : ""
@@ -233,6 +253,7 @@ export default function FreshmartFull({
                 <motion.a
                     href={waOrderUrl}
                     target="_blank"
+                    onClick={() => trackEvent("whatsapp_click")}
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
@@ -261,6 +282,7 @@ export default function FreshmartFull({
                 <motion.a
                     href={waQueryUrl}
                     target="_blank"
+                    onClick={() => trackEvent("whatsapp_click")}
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.3, type: "spring", stiffness: 200 }}

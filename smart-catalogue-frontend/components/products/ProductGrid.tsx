@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "@/lib/mockProducts";
+import { Product } from "@/lib/types";
 import ProductCard from "./ProductCard";
 
 export default function ProductGrid({

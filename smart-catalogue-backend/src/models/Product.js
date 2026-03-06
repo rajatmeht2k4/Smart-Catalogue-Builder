@@ -10,6 +10,8 @@ const productSchema = new mongoose.Schema(
     name: String,
     price: Number,
     image: String,
+    isActive: { type: Boolean, default: true },
+    order: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

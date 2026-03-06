@@ -1,5 +1,5 @@
 import { Pencil, Trash2 } from "lucide-react";
-import { Product } from "@/lib/mockProducts";
+import { Product } from "@/lib/types";
 import { Button } from "../ui/button";
 
 export default function ProductCard({

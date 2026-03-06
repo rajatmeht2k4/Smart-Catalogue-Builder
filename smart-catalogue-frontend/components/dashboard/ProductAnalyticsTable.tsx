@@ -1,6 +1,4 @@
-import { mockProductAnalytics } from "@/lib/mockAnalytics";
-
-export function ProductAnalyticsTable() {
+export function ProductAnalyticsTable({ data = [] }: { data: any[] }) {
   return (
     <div className="bg-white p-6 rounded-2xl shadow mt-6">
       <h2 className="font-semibold mb-4">Product Analytics</h2>
@@ -18,19 +16,25 @@ export function ProductAnalyticsTable() {
           </thead>
 
           <tbody>
-            {mockProductAnalytics.map((p, i) => (
-              <tr key={i} className="border-b last:border-0 hover:bg-gray-50 border-gray-300">
-                <td className="py-3">{p.name}</td>
-                <td className="py-3 text-right">{p.views}</td>
-                <td className="py-3 text-right">{p.clicks}</td>
-                <td className="py-3 text-right">{p.queries}</td>
-                <td className="py-3 text-right">
-                  <span className="px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
-                    {p.rate}%
-                  </span>
-                </td>
+            {data.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="text-center py-6 text-gray-500">No product analytics data available</td>
               </tr>
-            ))}
+            ) : (
+              data.map((p, i) => (
+                <tr key={i} className="border-b last:border-0 hover:bg-gray-50 border-gray-300">
+                  <td className="py-3">{p.name}</td>
+                  <td className="py-3 text-right">{p.views || 0}</td>
+                  <td className="py-3 text-right">{p.clicks || 0}</td>
+                  <td className="py-3 text-right">{p.queries || 0}</td>
+                  <td className="py-3 text-right">
+                    <span className="px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
+                      {p.rate || 0}%
+                    </span>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
