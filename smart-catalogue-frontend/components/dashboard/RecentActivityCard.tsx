@@ -5,14 +5,12 @@ export function RecentActivityCard({ data }: { data?: any[] }) {
   const activities = data || [];
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow mt-8">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold">Recent Activity</h3>
-      </div>
+    <div className="bg-white p-5 rounded-xl border border-gray-100 mt-6">
+      <h3 className="text-sm font-semibold text-gray-900 mb-4">Recent Activity</h3>
 
-      <div className="space-y-4 max-h-80 overflow-y-auto">
+      <div className="space-y-3 max-h-72 overflow-y-auto">
         {activities.length === 0 ? (
-          <p className="text-gray-500 text-sm py-4">No recent activity yet.</p>
+          <p className="text-gray-400 text-sm py-6 text-center">No recent activity yet.</p>
         ) : (
           activities.map((a, i) => {
             const iconMap: any = {
@@ -24,26 +22,23 @@ export function RecentActivityCard({ data }: { data?: any[] }) {
             };
 
             const colorMap: any = {
-              view: "bg-blue-100 text-blue-600",
-              query: "bg-green-100 text-green-600",
-              click: "bg-orange-100 text-orange-600",
-              share: "bg-purple-100 text-purple-600",
-              like: "bg-pink-100 text-pink-600",
+              view: "bg-blue-50 text-blue-500",
+              query: "bg-emerald-50 text-emerald-500",
+              click: "bg-amber-50 text-amber-500",
+              share: "bg-indigo-50 text-indigo-500",
+              like: "bg-pink-50 text-pink-500",
             };
 
             const Icon = iconMap[a.type] || Eye;
 
             return (
-              <div key={i} className="flex items-start gap-3 border-b pb-4 last:border-0 border-gray-300">
-                <div
-                  className={`w-9 h-9 rounded-full flex items-center justify-center ${colorMap[a.type]}`}
-                >
-                  <Icon size={16} />
+              <div key={i} className="flex items-start gap-3 pb-3 border-b border-gray-50 last:border-0 last:pb-0">
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${colorMap[a.type]}`}>
+                  <Icon size={14} />
                 </div>
-
-                <div className="flex-1">
-                  <p className="text-sm text-gray-900">{a.message}</p>
-                  <p className="text-xs text-gray-500">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-gray-700 leading-snug">{a.message}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">
                     {a.time ? formatDistanceToNow(new Date(a.time), { addSuffix: true }) : 'Just now'}
                   </p>
                 </div>

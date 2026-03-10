@@ -2,11 +2,10 @@
 import { Monitor, Smartphone, Tablet } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
-// Fixed color mapping by device name, not by array index
 const COLOR_MAP: Record<string, string> = {
-    mobile: "#8B5CF6",   // Purple
-    desktop: "#EC4899",  // Pink
-    tablet: "#F59E0B",   // Orange
+    mobile: "#4f46e5",
+    desktop: "#3b82f6",
+    tablet: "#f59e0b",
 };
 
 export default function DeviceBreakdownChart({ data }: { data: any[] }) {
@@ -25,9 +24,9 @@ export default function DeviceBreakdownChart({ data }: { data: any[] }) {
     };
 
     return (
-        <div className="bg-white p-6 rounded-2xl shadow">
-            <h2 className="font-semibold">Device Breakdown</h2>
-            <div className="h-72">
+        <div className="bg-white p-5 rounded-xl border border-gray-100">
+            <h2 className="text-sm font-semibold text-gray-900 mb-1">Device Breakdown</h2>
+            <div className="h-56">
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                         <Pie
@@ -36,9 +35,10 @@ export default function DeviceBreakdownChart({ data }: { data: any[] }) {
                             dataKey="value"
                             cx="50%"
                             cy="50%"
-                            outerRadius={100}
-                            paddingAngle={1}
-                            cornerRadius={3}
+                            outerRadius={80}
+                            innerRadius={45}
+                            paddingAngle={2}
+                            cornerRadius={4}
                         >
                             {formattedData.map((entry, index) => (
                                 <Cell key={index} fill={entry.color} />
@@ -46,9 +46,10 @@ export default function DeviceBreakdownChart({ data }: { data: any[] }) {
                         </Pie>
                         <Tooltip
                             contentStyle={{
-                                borderRadius: "12px",
-                                border: "1px solid #eee",
+                                borderRadius: "8px",
+                                border: "1px solid #e5e7eb",
                                 fontSize: "12px",
+                                boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)',
                             }}
                             formatter={(value, name) => [`${value}`, name]}
                         />
@@ -56,24 +57,23 @@ export default function DeviceBreakdownChart({ data }: { data: any[] }) {
                 </ResponsiveContainer>
             </div>
 
-            {/* Bottom legend */}
-            <div className="grid grid-cols-3 text-center">
-                <div className="flex flex-col items-center gap-1 text-purple-600">
-                    <Smartphone size={20} />
-                    <p className="text-sm">Mobile</p>
-                    <p className="font-semibold">{getPercentage("mobile")}%</p>
+            <div className="grid grid-cols-3 text-center mt-2">
+                <div className="flex flex-col items-center gap-1">
+                    <Smartphone size={16} className="text-indigo-600" />
+                    <p className="text-xs text-gray-500">Mobile</p>
+                    <p className="text-sm font-semibold text-gray-900">{getPercentage("mobile")}%</p>
                 </div>
 
-                <div className="flex flex-col items-center gap-1 text-pink-600">
-                    <Monitor size={20} />
-                    <p className="text-sm">Desktop</p>
-                    <p className="font-semibold">{getPercentage("desktop")}%</p>
+                <div className="flex flex-col items-center gap-1">
+                    <Monitor size={16} className="text-blue-500" />
+                    <p className="text-xs text-gray-500">Desktop</p>
+                    <p className="text-sm font-semibold text-gray-900">{getPercentage("desktop")}%</p>
                 </div>
 
-                <div className="flex flex-col items-center gap-1 text-orange-500">
-                    <Tablet size={20} />
-                    <p className="text-sm">Tablet</p>
-                    <p className="font-semibold">{getPercentage("tablet")}%</p>
+                <div className="flex flex-col items-center gap-1">
+                    <Tablet size={16} className="text-amber-500" />
+                    <p className="text-xs text-gray-500">Tablet</p>
+                    <p className="text-sm font-semibold text-gray-900">{getPercentage("tablet")}%</p>
                 </div>
             </div>
         </div>

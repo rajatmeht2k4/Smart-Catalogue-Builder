@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { ClerkProvider } from "@clerk/nextjs";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -25,37 +20,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-      appearance={{
-        variables: {
-          colorPrimary: "#8B5CF6",
-          colorText: "#0F172A",
-          borderRadius: "0.375rem", // 🔥 Less rounded (was 0.75rem)
-        },
-        elements: {
-          card: "rounded-md shadow-xl border border-white/40 bg-white/95 backdrop-blur", // 🔥 sharper card
-          headerTitle: "text-2xl font-semibold tracking-tight",
-          headerSubtitle: "text-sm text-slate-500",
-
-          formFieldInput:
-            "rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500",
-
-          formButtonPrimary:
-            "rounded-md h-11 text-sm font-medium bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90",
-
-          footer: "hidden", // ❌ This hides Clerk footer container BUT branding still appears in free plan
-        },
-      }}
-      
-    >
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-purple-50 via-pink-50 to-white`}
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${inter.variable} font-sans antialiased bg-gray-50 text-gray-900`}
+        suppressHydrationWarning
+      >
+        <ClerkProvider
+          appearance={{
+            variables: {
+              colorPrimary: "#4f46e5",
+              colorText: "#1e293b",
+              borderRadius: "0.5rem",
+            },
+            elements: {
+              card: "rounded-lg shadow-lg border border-gray-100 bg-white",
+              headerTitle: "text-xl font-semibold tracking-tight",
+              headerSubtitle: "text-sm text-slate-500",
+              formFieldInput:
+                "rounded-md border border-gray-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500",
+              formButtonPrimary:
+                "rounded-md h-10 text-sm font-medium bg-indigo-600 hover:bg-indigo-700",
+              footer: "hidden",
+            },
+          }}
         >
           {children}
-          <Toaster richColors position="top-right" />
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+        <Toaster richColors position="top-right" />
+      </body>
+    </html>
   );
 }

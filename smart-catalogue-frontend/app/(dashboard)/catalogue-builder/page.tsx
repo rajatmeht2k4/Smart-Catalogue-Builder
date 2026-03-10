@@ -170,7 +170,7 @@ export default function CatalogueBuilderPage() {
                     {/* Action Buttons */}
                     <div className="space-y-2 sticky bottom-0 bg-white/70 backdrop-blur p-2 rounded-xl">
                         <Button
-                            className="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white"
+                            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
                             onClick={handlePublish}
                             disabled={saving}
                         >

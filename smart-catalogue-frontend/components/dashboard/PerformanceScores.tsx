@@ -17,14 +17,14 @@ export default function PerformanceScores({ data }: { data?: any[] }) {
       {scores.map((item) => (
         <div
           key={item.title}
-          className="bg-white p-6 rounded-2xl shadow flex flex-col justify-between"
+          className="bg-white p-5 rounded-xl border border-gray-100 flex flex-col justify-between"
         >
           <div>
             <p className="text-sm text-gray-500">{item.title}</p>
             <h3 className="text-2xl font-semibold mt-2">{item.value}</h3>
           </div>
 
-          <div className="mt-3">
+          <div className="mt-2">
             <span
               className={`inline-block text-xs font-medium px-2 py-1 rounded-full ${statusColorMap[item.status]}`}
             >

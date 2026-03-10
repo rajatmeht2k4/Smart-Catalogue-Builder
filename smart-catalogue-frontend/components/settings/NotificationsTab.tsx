@@ -46,7 +46,7 @@ export default function NotificationsTab() {
       <Item title="Weekly Reports" desc="Get weekly analytics summary" keyName="weeklyReports" />
 
       <Button
-        className="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white"
+        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
         onClick={() => toast.success("Preferences saved")}
       >
         <Save className="w-4 h-4 mr-2" />

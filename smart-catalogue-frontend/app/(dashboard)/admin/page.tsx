@@ -1,22 +1,31 @@
 "use client";
 import { useState } from "react";
 import ViewsAreaChart from "@/components/dashboard/ViewsAreaChart";
-import { TopProductsList } from "@/components/dashboard/TopProductsList";
-import Sidebar from "@/components/Sidebar";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import DeviceBreakdownChart from "@/components/dashboard/DeviceBreakdownChart";
 import TrafficSourcesCard from "@/components/dashboard/TrafficSourcesCard";
 import StatsGrid from "@/components/dashboard/StatsGrid";
 import PeakHoursChart from "@/components/dashboard/PeakHoursChart";
+import ConversionFunnel from "@/components/dashboard/ConversionFunnel";
+import DayOfWeekChart from "@/components/dashboard/DayOfWeekChart";
+import SourceConversionCard from "@/components/dashboard/SourceConversionCard";
 import { RecentActivityCard } from "@/components/dashboard/RecentActivityCard";
-import { VisitorInsights } from "@/components/dashboard/VisitorInsights";
 import { ProductAnalyticsTable } from "@/components/dashboard/ProductAnalyticsTable";
 import PerformanceScores from "@/components/dashboard/PerformanceScores";
-import { PerformanceRecommendations } from "@/components/dashboard/PerformanceRecommendations";
+import { SmartInsights } from "@/components/dashboard/SmartInsights";
 import { useDashboardAnalytics, useBusiness } from "@/lib/hooks";
 
+const tabs = [
+  { id: "overview", label: "Overview" },
+  { id: "products", label: "Products" },
+  { id: "audience", label: "Audience" },
+  { id: "insights", label: "Insights" },
+] as const;
+
+type TabId = typeof tabs[number]["id"];
+
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState<"overview" | "products" | "audience" | "performance">("overview");
+  const [activeTab, setActiveTab] = useState<TabId>("overview");
   const { analytics, isLoading: analyticsLoading } = useDashboardAnalytics();
   const { business, isLoading: businessLoading } = useBusiness();
 
@@ -24,97 +33,76 @@ export default function AdminPage() {
 
   return (
     <div>
-      {/* Sidebar */}
-      <Sidebar />
+      <DashboardHeader />
 
-      {/* Main Content */}
-      <main>
-        <DashboardHeader />
+      {isLoading ? (
+        <div className="flex justify-center items-center py-20">
+          <div className="animate-spin rounded-full h-6 w-6 border-2 border-indigo-600 border-t-transparent" />
+        </div>
+      ) : (
+        <>
+          <StatsGrid summary={analytics?.summary} />
 
-        {isLoading ? (
-          <div className="flex justify-center items-center py-20 mt-10">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
-          </div>
-        ) : (
-          <>
-            {/* Stats */}
-            <StatsGrid summary={analytics?.summary} />
-
-            {/* Share Link */}
-            <div className="bg-white p-4 rounded-xl shadow flex items-center gap-3 mt-8">
-              <p className="text-sm text-gray-600 shrink-0">Share your catalogue:</p>
-              <input
-                value={`http://localhost:3000/catalogue/${business?.slug || ""}`}
-                readOnly
-                className="border rounded-xl px-3 py-2 flex-1"
-              />
+          {/* Tabs */}
+          <div className="flex border-b border-gray-200 mt-8">
+            {tabs.map((tab) => (
               <button
-                onClick={() => navigator.clipboard.writeText(`http://localhost:3000/catalogue/${business?.slug || ""}`)}
-                className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-4 py-2 rounded-lg whitespace-nowrap"
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-4 py-2.5 text-sm font-medium transition-colors relative
+                  ${activeTab === tab.id
+                    ? "text-indigo-700"
+                    : "text-slate-400 hover:text-slate-600"
+                  }`}
               >
-                Copy Link
+                {tab.label}
+                {activeTab === tab.id && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600 rounded-t-full" />
+                )}
               </button>
-            </div>
+            ))}
+          </div>
 
-            {/* Tabs */}
-            <div className="flex bg-gray-100 rounded-full p-1 w-full justify-between gap-1 mt-6 ">
-              {[
-                { id: "overview", label: "Overview" },
-                { id: "products", label: "Products" },
-                { id: "audience", label: "Audience" },
-                { id: "performance", label: "Performance" },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`w-full py-2 rounded-full text-sm font-medium transition ${activeTab === tab.id
-                    ? "bg-white shadow"
-                    : "text-gray-500 hover:text-black"
-                    }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            {activeTab === "overview" && (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                  <ViewsAreaChart data={analytics?.dailyViews || []} />
-                  <PeakHoursChart data={analytics?.peakHours || []} />
-                </div>
-                <RecentActivityCard data={analytics?.recentActivity || []} />
-              </>
-            )}
-
-            {activeTab === "products" && (
-              <div className="mt-8">
-                <ProductAnalyticsTable data={analytics?.topProducts || []} />
-                {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                  <TopProductsList data={analytics?.topProducts || []} />
-                </div> */}
+          {activeTab === "overview" && (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <ViewsAreaChart data={analytics?.dailyViews || []} />
+                <PeakHoursChart data={analytics?.peakHours || []} />
               </div>
-            )}
+              <ConversionFunnel data={analytics?.funnelData} />
+              <RecentActivityCard data={analytics?.recentActivity || []} />
+            </>
+          )}
 
-            {activeTab === "audience" && (
-              <div className="mt-8">
-                <VisitorInsights data={analytics?.visitorInsights} />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                  <DeviceBreakdownChart data={analytics?.deviceBreakdown || []} />
-                  <TrafficSourcesCard data={analytics?.trafficSources || []} />
-                </div>
+          {activeTab === "products" && (
+            <div className="mt-6">
+              <ProductAnalyticsTable data={analytics?.topProducts || []} />
+            </div>
+          )}
+
+          {activeTab === "audience" && (
+            <div className="mt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <DayOfWeekChart data={analytics?.dayOfWeek} bestDay={analytics?.bestDay} />
+                <SourceConversionCard data={analytics?.sourceConversion} />
               </div>
-            )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <DeviceBreakdownChart data={analytics?.deviceBreakdown || []} />
+                <TrafficSourcesCard data={analytics?.trafficSources || []} />
+              </div>
+            </div>
+          )}
 
-            {activeTab === "performance" && (
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+          {activeTab === "insights" && (
+            <div className="mt-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <PerformanceScores data={analytics?.performanceScores || []} />
-                <PerformanceRecommendations />
               </div>
-            )}
-          </>
-        )}
-      </main>
+              <SmartInsights data={analytics?.insights} />
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

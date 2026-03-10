@@ -37,7 +37,7 @@ export default function PreferencesTab() {
       </div>
 
       <Button
-        className="bg-gradient-to-r from-purple-600 to-pink-500 text-white"
+        className="bg-indigo-600 hover:bg-indigo-700 text-white"
         onClick={() => toast.success("Preferences saved")}
       >
         <Save className="w-4 h-4 mr-2" />

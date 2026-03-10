@@ -103,7 +103,7 @@ export default function ProductsPage() {
 
           <Button
             onClick={() => setDialog("add")}
-            className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-4 py-1 rounded-lg text-md  hover:shadow-lg"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1 rounded-lg text-sm font-medium"
           >
             <Plus size={16} className="inline mr-1" /> Add Product
           </Button>
@@ -113,7 +113,7 @@ export default function ProductsPage() {
 
       {isLoading ? (
         <div className="flex justify-center items-center py-20">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-2 border-indigo-600 border-t-transparent"></div>
         </div>
       ) : (
         <ProductGrid

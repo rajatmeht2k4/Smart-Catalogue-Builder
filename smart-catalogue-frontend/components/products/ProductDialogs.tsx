@@ -111,7 +111,7 @@ export default function ProductDialogs({
                 Cancel
               </Button>
               <Button
-                className="bg-gradient-to-r from-purple-600 to-pink-500 text-white"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white"
                 onClick={() => {
                   mode === "add" ? onAdd(form) : onEdit(form);
                   onClose();

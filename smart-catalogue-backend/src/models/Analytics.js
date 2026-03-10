@@ -23,4 +23,7 @@ const analyticsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Compound index for fast aggregation queries in the dashboard $facet pipeline
+analyticsSchema.index({ businessId: 1, type: 1, createdAt: -1 });
+
 export default mongoose.model("Analytics", analyticsSchema);

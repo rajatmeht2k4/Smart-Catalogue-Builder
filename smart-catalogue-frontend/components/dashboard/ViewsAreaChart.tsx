@@ -5,7 +5,6 @@ import {
 } from "recharts";
 
 export default function ViewsAreaChart({ data }: { data: any[] }) {
-  // Map backend format {_id: 'YYYY-MM-DD', views: 5} to recharts format with weekday names
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   const formattedData = data.map(d => {
@@ -19,30 +18,44 @@ export default function ViewsAreaChart({ data }: { data: any[] }) {
   });
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow">
-      <h2 className="font-semibold mb-3">Daily Views <span className="text-sm font-normal text-gray-400">(Last 7 days)</span></h2>
-      <div className="h-72">
+    <div className="bg-white p-5 rounded-xl border border-gray-100">
+      <h2 className="text-sm font-semibold text-gray-900 mb-1">Daily Views</h2>
+      <p className="text-xs text-gray-400 mb-4">Last 7 days</p>
+      <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={formattedData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
             <XAxis
               dataKey="label"
-              tick={{ fontSize: 12 }}
+              tick={{ fontSize: 11, fill: '#9ca3af' }}
               tickLine={false}
-              axisLine={{ stroke: '#e5e7eb' }}
+              axisLine={false}
             />
             <YAxis
               allowDecimals={false}
-              tick={{ fontSize: 12 }}
+              tick={{ fontSize: 11, fill: '#9ca3af' }}
               tickLine={false}
-              axisLine={{ stroke: '#e5e7eb' }}
-              label={{ value: 'Views', angle: -90, position: 'insideLeft', style: { fontSize: 12, fill: '#9ca3af' } }}
+              axisLine={false}
+              width={30}
             />
             <Tooltip
-              contentStyle={{ borderRadius: '12px', border: '1px solid #eee', fontSize: '13px' }}
-              formatter={(value: any) => [`${value} views`, 'Page Views']}
+              contentStyle={{
+                borderRadius: '8px',
+                border: '1px solid #e5e7eb',
+                fontSize: '12px',
+                boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)',
+              }}
+              formatter={(value: any) => [`${value}`, 'Views']}
             />
-            <Area dataKey="views" stroke="#8B5CF6" fill="#8B5CF620" strokeWidth={2} />
+            <Area
+              dataKey="views"
+              stroke="#4f46e5"
+              fill="#4f46e5"
+              fillOpacity={0.08}
+              strokeWidth={2}
+              dot={false}
+              activeDot={{ r: 4, fill: '#4f46e5', strokeWidth: 0 }}
+            />
           </AreaChart>
         </ResponsiveContainer>
       </div>

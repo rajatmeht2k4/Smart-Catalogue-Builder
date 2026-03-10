@@ -20,12 +20,12 @@ export default function ProductCard({
       />
       <div className="p-4">
         <h3 className="font-medium">{product.name}</h3>
-        <p className="text-purple-600">{product.price}</p>
+        <p className="text-indigo-600 font-semibold">{product.price}</p>
         {product.sku && <p className="text-xs text-gray-500">SKU: {product.sku}</p>}
         <div
           className={`mt-3 text-xs px-3 py-1 rounded-full inline-block ${product.bgRemoved
             ? "bg-green-100 text-green-700"
-            : "bg-purple-100 text-purple-700"
+            : "bg-indigo-50 text-indigo-700"
             }`}
         >
           {product.bgRemoved ? "Background Removed" : "Original Image"}

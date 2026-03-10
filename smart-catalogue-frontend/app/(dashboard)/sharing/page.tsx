@@ -86,7 +86,7 @@ export default function SharingPage() {
                     <h3 className="text-lg font-medium ">Your Catalogue Link</h3>
                     <div className="flex gap-2">
                         <Input value={catalogueUrl} readOnly className="bg-gray-100 border-none " />
-                        <Button className="bg-gradient-to-r from-purple-600 to-pink-500 text-white" onClick={copyToClipboard}>
+                        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white" onClick={copyToClipboard}>
                             {copied ? (
                                 <>
                                     <Check className="w-4 h-4 mr-2" /> Copied
@@ -177,7 +177,7 @@ export default function SharingPage() {
                         <div>
                             <h3 className="text-lg font-medium flex items-center gap-2">
                                 Custom Domain
-                                <Badge className="bg-purple-100 text-purple-700">
+                                <Badge className="bg-amber-100 text-amber-700">
                                     <Crown className="w-3 h-3 mr-1" />
                                     Pro
                                 </Badge>

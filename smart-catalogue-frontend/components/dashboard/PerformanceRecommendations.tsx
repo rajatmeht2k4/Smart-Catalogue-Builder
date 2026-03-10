@@ -25,8 +25,8 @@ export function PerformanceRecommendations() {
     } else {
         recommendations.push({
             icon: Share2,
-            color: "bg-purple-500",
-            bgColor: "bg-purple-50",
+            color: "bg-indigo-500",
+            bgColor: "bg-indigo-50",
             title: "Add more products",
             desc: `You have ${productCount} product${productCount !== 1 ? 's' : ''}. Catalogues with 10+ products get 40% more engagement.`
         });
@@ -62,8 +62,8 @@ export function PerformanceRecommendations() {
     });
 
     return (
-        <div className="bg-white p-6 rounded-2xl shadow col-span-full">
-            <h2 className="font-semibold mb-3">Performance Recommendations</h2>
+        <div className="bg-white p-5 rounded-xl border border-gray-100 col-span-full">
+            <h2 className="text-sm font-semibold text-gray-900 mb-4">Performance Recommendations</h2>
 
             <div className="space-y-4">
                 {recommendations.map((rec, i) => {

@@ -5,13 +5,11 @@ import {
 } from "recharts";
 
 export default function PeakHoursChart({ data }: { data: any[] }) {
-  // Map backend format {_id: 14, count: 5} to recharts format
   const formattedData = data.map(d => {
     const hourNum = d._id;
     const ampm = hourNum >= 12 ? 'PM' : 'AM';
     let hour12 = hourNum % 12;
     if (hour12 === 0) hour12 = 12;
-
     return {
       hour: `${hour12} ${ampm}`,
       visitors: d.count
@@ -19,30 +17,36 @@ export default function PeakHoursChart({ data }: { data: any[] }) {
   });
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow">
-      <h2 className="font-semibold mb-3">Peak Hours</h2>
-      <div className="h-72">
+    <div className="bg-white p-5 rounded-xl border border-gray-100">
+      <h2 className="text-sm font-semibold text-gray-900 mb-1">Peak Hours</h2>
+      <p className="text-xs text-gray-400 mb-4">IST timezone</p>
+      <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={formattedData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
             <XAxis
               dataKey="hour"
-              tick={{ fontSize: 11 }}
+              tick={{ fontSize: 10, fill: '#9ca3af' }}
               tickLine={false}
-              axisLine={{ stroke: '#e5e7eb' }}
+              axisLine={false}
             />
             <YAxis
               allowDecimals={false}
-              tick={{ fontSize: 12 }}
+              tick={{ fontSize: 11, fill: '#9ca3af' }}
               tickLine={false}
-              axisLine={{ stroke: '#e5e7eb' }}
-              label={{ value: 'Visitors', angle: -90, position: 'insideLeft', style: { fontSize: 12, fill: '#9ca3af' } }}
+              axisLine={false}
+              width={25}
             />
             <Tooltip
-              contentStyle={{ borderRadius: '12px', border: '1px solid #eee', fontSize: '13px' }}
-              formatter={(value: any) => [`${value} visitors`, 'Peak Traffic']}
+              contentStyle={{
+                borderRadius: '8px',
+                border: '1px solid #e5e7eb',
+                fontSize: '12px',
+                boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)',
+              }}
+              formatter={(value: any) => [`${value}`, 'Visitors']}
             />
-            <Bar dataKey="visitors" fill="#8B5CF6" radius={[6, 6, 0, 0]} />
+            <Bar dataKey="visitors" fill="#4f46e5" fillOpacity={0.85} radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>

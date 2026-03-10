@@ -16,7 +16,7 @@ export default function BillingTab() {
               Manage your subscription and billing
             </p>
           </div>
-          <Badge className="bg-purple-100 text-purple-700">
+          <Badge className="bg-amber-100 text-amber-700">
             <Crown className="w-3 h-3 mr-1" /> FREE
           </Badge>
         </div>
@@ -36,7 +36,7 @@ export default function BillingTab() {
           </div>
         </div>
 
-        <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white">
+        <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
           <Crown className="w-4 h-4 mr-2" /> Upgrade to Pro
         </Button>
       </Card>

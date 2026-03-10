@@ -22,7 +22,7 @@ export default function AccountTab() {
 
                 </div>
                 <Button
-                    className="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
                     onClick={() => toast.success("Password updated")}
                 >
                     Update Password

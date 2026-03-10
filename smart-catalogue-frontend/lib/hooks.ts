@@ -42,3 +42,48 @@ export function useDashboardAnalytics() {
 
   return { analytics: data, isLoading, error };
 }
+
+// ── SUPER ADMIN HOOKS ──
+
+export function useSuperAdminStats() {
+  const { getToken, isLoaded, isSignedIn } = useAuth();
+  
+  const { data, error, isLoading } = useSWR(
+    isLoaded && isSignedIn ? "http://localhost:5000/api/founder/stats/platform" : null,
+    async (url) => fetcher(url, await getToken())
+  );
+
+  return { stats: data, isLoading: !isLoaded || isLoading, error };
+}
+
+export function useSuperAdminBusinesses(page = 1, search = "") {
+  const { getToken, isLoaded, isSignedIn } = useAuth();
+  
+  const { data, error, isLoading, mutate } = useSWR(
+    isLoaded && isSignedIn 
+      ? `http://localhost:5000/api/founder/businesses?page=${page}&search=${encodeURIComponent(search)}`
+      : null,
+    async (url) => fetcher(url, await getToken())
+  );
+
+  return { 
+    businesses: data?.data || [], 
+    pagination: data?.pagination || null, 
+    isLoading: !isLoaded || isLoading, 
+    error,
+    mutate 
+  };
+}
+
+export function useSuperAdminSystemHealth() {
+  const { getToken, isLoaded, isSignedIn } = useAuth();
+  
+  // Refetch health stats every 5 seconds for a "live" feel
+  const { data, error, isLoading } = useSWR(
+    isLoaded && isSignedIn ? "http://localhost:5000/api/founder/system/health" : null,
+    async (url) => fetcher(url, await getToken()),
+    { refreshInterval: 5000 }
+  );
+
+  return { health: data, isLoading: !isLoaded || isLoading, error };
+}

@@ -16,7 +16,7 @@ export function ProductConversionCard({ data = [] }: { data: any[] }) {
               </div>
               <div className="h-2 bg-gray-200 rounded-full mt-1">
                 <div
-                  className="h-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500"
+                  className="h-2 rounded-full bg-indigo-600"
                   style={{ width: `${rate}%` }}
                 />
               </div>

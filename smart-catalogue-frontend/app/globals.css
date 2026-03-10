@@ -12,7 +12,7 @@
   --popover: 0 0% 100%;
   --popover-foreground: 222.2 47.4% 11.2%;
 
-  --primary: 262.1 83.3% 57.8%;
+  --primary: 263 70% 50%;
   --primary-foreground: 210 40% 98%;
 
   --secondary: 210 40% 96.1%;
@@ -29,51 +29,29 @@
 
   --border: 214.3 31.8% 91.4%;
   --input: 214.3 31.8% 91.4%;
-  --ring: 262.1 83.3% 57.8%;
+  --ring: 263 70% 50%;
 
-  --radius: 1rem;
+  --radius: 0.5rem;
 }
 
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
+  font-feature-settings: "rlig" 1, "calt" 1;
 }
 
-
-/* Premium scrollbar */
-/* ::-webkit-scrollbar {
-  width: 8px;
+/* Smooth transitions for all interactive elements */
+button, a, input, select, textarea {
+  transition: all 0.15s ease;
 }
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #a855f7, #ec4899);
-  border-radius: 999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #9333ea, #db2777);
-} */
-
-/* Firefox */
-/* * {
-  scrollbar-width: auto;
-  scrollbar-color: #a855f7 transparent;
-} */
 
 /* Catalogue Builder Preview — view-only mode */
-/* Hide floating WhatsApp CTAs at bottom */
 .catalogue-preview-panel .fixed {
   display: none !important;
 }
-/* Disable product card clicks and selection checkboxes */
 .catalogue-preview-panel .cursor-pointer {
   pointer-events: none;
 }
-/* Hide the share button in header */
 .catalogue-preview-panel header button {
   display: none !important;
 }

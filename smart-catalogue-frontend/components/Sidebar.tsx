@@ -1,18 +1,12 @@
 "use client";
 import Link from "next/link";
-import { LayoutDashboard, Package, Boxes, Share2, Bot, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Package, Layers, Share2, Settings, LogOut } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { SignOutButton, useUser } from "@clerk/nextjs";
-import { Button } from "./ui/button";
-
-
 import { useBusiness } from "@/lib/hooks";
 
-
 export default function Sidebar() {
-
   const pathname = usePathname();
-
   const { isSignedIn, user } = useUser();
   const { business } = useBusiness();
   const router = useRouter();
@@ -22,71 +16,70 @@ export default function Sidebar() {
   const userImage = user?.imageUrl;
   const initials = businessName.split(" ").map((w: string) => w[0]).join("").slice(0, 2).toUpperCase();
 
-  const linkClass = (path: string) =>
-    `flex items-center gap-3 px-3 py-2 rounded-lg transition ${pathname === path
-      ? "bg-purple-50 text-purple-600"
-      : "hover:bg-gray-100 text-gray-700"
-    }`;
+  const navItems = [
+    { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
+    { href: "/products", icon: Package, label: "Products" },
+    { href: "/catalogue-builder", icon: Layers, label: "Catalogue Builder" },
+    { href: "/sharing", icon: Share2, label: "Sharing" },
+    { href: "/settings", icon: Settings, label: "Settings" },
+  ];
 
+  const isActive = (path: string) => pathname === path;
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-white shadow-md px-5 py-6 flex flex-col">
-      {/* Logo */}
-      <div className="flex items-center gap-3 mb-10">
+    <aside className="fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 px-4 py-6 flex flex-col">
+      {/* Business profile */}
+      <div className="flex items-center gap-3 px-2 mb-8">
         {userImage ? (
-          <img src={userImage} alt={businessName} className="h-10 w-10 rounded-xl object-cover" />
+          <img src={userImage} alt={businessName} className="h-9 w-9 rounded-lg object-cover" />
         ) : (
-          <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-white font-bold text-sm">
+          <div className="h-9 w-9 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-semibold text-xs">
             {initials}
           </div>
         )}
-        <div>
-          <p className="font-semibold text-sm">{businessName}</p>
-          <p className="text-xs text-gray-400">{userEmail}</p>
+        <div className="min-w-0">
+          <p className="font-semibold text-sm text-slate-800 truncate">{businessName}</p>
+          <p className="text-xs text-slate-400 truncate">{userEmail}</p>
         </div>
       </div>
 
-      {/* Menu */}
-      <nav className="flex flex-col gap-1 text-sm">
-        <Link href="/admin" className={linkClass('/admin')}>
-          <LayoutDashboard size={18} /> Dashboard
-        </Link>
+      {/* Divider */}
+      <div className="h-px bg-gray-100 mx-2 mb-4" />
 
-        <Link href="/products" className={linkClass('/products')}>
-          <Package size={18} /> Products
-        </Link>
-
-        {/* <Link href="#" className={linkClass('/inventory')}>
-          <Boxes size={18} /> Inventory
-        </Link> */}
-
-        <Link href="/catalogue-builder" className={linkClass('/catalogue-builder')}>
-          <Boxes size={18} /> Catalogue Builder
-        </Link>
-
-        <Link href="/sharing" className={linkClass('/sharing')}>
-          <Share2 size={18} /> Sharing
-        </Link>
-
-        <Link href="/settings" className={linkClass('/settings')}>
-          <Settings size={18} /> Settings
-        </Link>
+      {/* Navigation */}
+      <nav className="flex flex-col gap-0.5 text-[13px] font-medium flex-1">
+        {navItems.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors relative
+                ${active
+                  ? "bg-indigo-50 text-indigo-700"
+                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                }`}
+            >
+              {active && (
+                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-amber-400 rounded-r-full" />
+              )}
+              <item.icon size={18} strokeWidth={active ? 2 : 1.5} />
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Logout */}
-      <div className="mt-auto">
+      <div className="pt-2 border-t border-gray-100">
         {isSignedIn && (
           <SignOutButton redirectUrl="/">
-            <Button
-              variant="ghost"
-              className="w-full justify-start text-red-600 hover:bg-red-50"
-            >
-              <LogOut className="mr-2 h-4 w-4" />
+            <button className="flex items-center gap-3 w-full px-3 py-2.5 text-[13px] font-medium text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+              <LogOut size={18} strokeWidth={1.5} />
               Logout
-            </Button>
+            </button>
           </SignOutButton>
         )}
-
       </div>
     </aside>
   );

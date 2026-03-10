@@ -54,7 +54,7 @@ export default function ProfileTab() {
     return (
       <Card className="p-6">
         <div className="flex justify-center items-center py-10">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-600"></div>
+          <div className="animate-spin rounded-full h-6 w-6 border-2 border-indigo-600 border-t-transparent"></div>
         </div>
       </Card>
     );
@@ -68,7 +68,7 @@ export default function ProfileTab() {
       </div>
 
       <div className="flex items-center gap-4">
-        <div className="w-20 h-20 rounded-lg bg-gray-200 flex items-center justify-center text-xl font-semibold uppercase text-purple-700">
+        <div className="w-20 h-20 rounded-lg bg-gray-200 flex items-center justify-center text-xl font-semibold uppercase text-indigo-700">
           {profile.name ? profile.name.substring(0, 2) : "NP"}
         </div>
         <Button variant="outline">
@@ -107,7 +107,7 @@ export default function ProfileTab() {
       </div>
 
       <Button
-        className="bg-gradient-to-r from-purple-600 to-pink-500 text-white"
+        className="bg-indigo-600 hover:bg-indigo-700 text-white"
         onClick={handleSave}
         disabled={isSaving}
       >
